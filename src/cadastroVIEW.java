@@ -145,7 +145,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
         ProdutosDTO produto = new ProdutosDTO();
         String nome = cadastroNome.getText();
         String valor = cadastroValor.getText();
-        String status = "A Venda";
+        String status = " A Venda ";
 
         if (nome.isEmpty() || valor.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos!");
