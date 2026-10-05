@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -109,7 +110,7 @@ public class listagemVIEW extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(193, 193, 193))
+                .addGap(203, 203, 203))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,12 +137,34 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
+ // REQUISITO: Pegar o ID diretamente do que o usuário digitou no campo de texto
+    String idDigitado = id_produto_venda.getText().trim();
+    
+    // Validação para garantir que o usuário digitou algo
+    if (idDigitado.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Por favor, digite o ID do produto que deseja vender!");
+        return;
+    }
+    
+    try {
+        // Converte o texto digitado para um número inteiro
+        int id = Integer.parseInt(idDigitado);
         
-        ProdutosDAO produtosdao = new ProdutosDAO();
+        ProdutosDAO produtodao = new ProdutosDAO();
+        boolean sucesso = produtodao.venderProduto(id);
         
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+        if(sucesso) {
+            JOptionPane.showMessageDialog(null, "Produto com ID " + id + " vendido com sucesso!");
+            id_produto_venda.setText(""); // Limpa o campo de texto após a venda
+            listarProdutos(); // Atualiza a tabela gráfica para mostrar o novo status "Vendido"
+        } else {
+            JOptionPane.showMessageDialog(null, "Falha ao registrar a venda do item. Verifique se o ID existe.");
+        }
+        
+    } catch (NumberFormatException e) {
+        // Alerta caso o usuário digite letras ou caracteres inválidos no campo de ID
+        JOptionPane.showMessageDialog(null, "Por favor, insira apenas números válidos no campo de ID!");
+    }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
